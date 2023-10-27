@@ -10,7 +10,7 @@ export default function RootLayout({
     <ClerkProvider>
     <html lang="en">
       <body>
-        <div className="flex flex-row w-full justify-between items-center h-10 p-5">
+        <div className="flex flex-row w-full justify-between items-center p-5">
         <div className='text-lg h-full text-center flex flex-row gap-5'>
           Recipy
           <SignedIn>
@@ -36,7 +36,9 @@ export default function RootLayout({
           </a>
         </div>
       </div>
+      <div className='h-[50vh]'>
       {children}
+      </div>
       </body>
     </html>
     </ClerkProvider>
