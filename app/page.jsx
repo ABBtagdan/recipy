@@ -1,19 +1,15 @@
-import { SignedIn, currentUser} from "@clerk/nextjs"
+import { SignedIn} from "@clerk/nextjs"
 import RecipeAddForm from "./ui/RecipeAddForm"
 import UserRecipies from "./ui/UserRecipies"
 
-export default async function Home() {
+// const user = await currentUser()
 
-  let user = await currentUser()
-  if (!user) user = {id: -1}
-
+export default function Home() {
   return (
     <div className="h-full w-full">
       <SignedIn>
-        <RecipeAddForm userId={user.id}/>
-        <UserRecipies userId={user.id}>
-
-        </UserRecipies>
+        <RecipeAddForm/>
+        <UserRecipies></UserRecipies>
       </SignedIn>
     </div>
   )

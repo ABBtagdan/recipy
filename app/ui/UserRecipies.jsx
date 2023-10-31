@@ -1,15 +1,28 @@
-"use client"
-import { useAuth } from "@clerk/nextjs"
-import { getUserRecipies } from "../api/supabase"
+import { auth} from "@clerk/nextjs"
+import {getUserRecipies} from "../api/supabase"
 
 
 export default async function UserRecipies(props){
 
-    const {getToken, userId} = useAuth()
+    let {userId, getToken} = auth()
+    
+    const token = await getToken({template: "supabase"})
 
-    const recipies = await getUserRecipies(userId, getToken)
+    const {data: recipies, error} = await getUserRecipies(userId, token)
 
-    return (
-        <div></div>
-    )
+
+return (
+    <h1>
+        {recipies.map((value, index) => (
+            <div key={index} className="p-5">
+            <h1 className="text-2xl font-bold">{value.Title}</h1>
+            {value.Ingredients.map((value, index)=>(
+            <div key={index}>
+                {value}
+            </div>
+            ))}
+            </div>
+        ))}
+    </h1>    
+)               
 }
