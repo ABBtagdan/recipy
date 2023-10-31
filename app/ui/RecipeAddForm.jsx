@@ -2,9 +2,12 @@
 import { useState } from "react"
 import {createRecipe} from "../api/supabase"
 import { useAuth } from "@clerk/nextjs"
+import { useRouter } from 'next/navigation';
 
 
 export default function RecipeAddForm(){ 
+
+    const router = useRouter()
 
     const {getToken, userId} = useAuth()
 
@@ -13,10 +16,13 @@ export default function RecipeAddForm(){
     let [ingredients, setIngredients] = useState([])
 
     const create = async () => {
+        if(titleValue.trim() == "") return
+        if(ingredients.length == 0) return
         let token = await getToken({ template: 'supabase' })
         createRecipe({Title: titleValue, Ingredients: ingredients}, token, userId)
         setIngredients([])
         setTitleValue("")
+        router.refresh()
     }
 
     function addIngredient(){
@@ -30,7 +36,7 @@ export default function RecipeAddForm(){
             <div className="bg-gray-500 w-1/2 p-5">
                 <input type="text" id="title" placeholder="Title" className="bg-white rounded-full text-black p-2 text-sm" value={titleValue} onChange={(e)=>{setTitleValue(e.target.value)}}/>
                 <div className="flex flex-row gap-5 my-5">
-                    <input type="text" id="ingredient" placeholder="Ingredient" className="bg-white rounded-full text-black p-2 text-sm" value={ingredientValue} onChange={(e)=>{setIngredientValue(e.target.value)}}/>
+                    <input type="text" id="ingredient" placeholder="Ingredient" className="bg-white rounded-full text-black p-2 text-sm" onKeyUp={(e)=>{ e.key == "Enter" ? addIngredient() : null}} value={ingredientValue} onChange={(e)=>{setIngredientValue(e.target.value)}}/>
                     <button onClick={addIngredient}>ADD</button>
                 </div>
                 
