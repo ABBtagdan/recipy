@@ -28,7 +28,7 @@ export default function RootLayout({
           <a href="/">
             Home
           </a>
-          <a href="/Recipies/">
+          <a href="/Recipes/">
             Recipes
           </a>
           <a href ="/aboutUs/">

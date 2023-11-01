@@ -13,6 +13,7 @@ export default function RecipeAddForm() {
   let [ingredientValue, setIngredientValue] = useState("");
   let [ingredients, setIngredients] = useState([]);
   let [instructions, setInstructions] = useState("");
+  let [Public, setPublic] = useState(false);
 
   const create = async () => {
     if (titleValue.trim() == "") return;
@@ -23,6 +24,7 @@ export default function RecipeAddForm() {
         Title: titleValue,
         Ingredients: ingredients,
         Instructions: instructions,
+        Public: Public,
       },
       token,
       userId
@@ -30,6 +32,7 @@ export default function RecipeAddForm() {
     setIngredients([]);
     setTitleValue("");
     setInstructions("");
+    setPublic(false);
     router.refresh();
   };
 
@@ -74,6 +77,11 @@ export default function RecipeAddForm() {
             <li key={index}>{value}</li>
           ))}
         </ul>
+        <input
+          type="checkbox"
+          value={Public}
+          onChange={(e) => setPublic(e.target.value)}
+        />
       </div>
       <div className="w-1/2 flex flex-col gap-5 justify-start items-center m-5">
         <textarea

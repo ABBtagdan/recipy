@@ -1,11 +1,10 @@
-import { auth, useAuth } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = "https://fgkgklznquijtrrwthkt.supabase.co";
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-export async function getUserRecipies(userId, token) {
-  const supabase = createClient(supabaseUrl, supabaseKey, {
+export function getClient(token) {
+  return createClient(supabaseUrl, supabaseKey, {
     db: {
       schema: "public",
     },
@@ -21,29 +20,28 @@ export async function getUserRecipies(userId, token) {
         : null,
     },
   });
+}
+
+export async function getUserRecipes(userId, token) {
+  const supabase = getClient(token);
 
   return await supabase.from("Recipies").select("*").eq("user_id", userId);
 }
 
-export async function createRecipe(data, token, userId) {
-  console.log(token);
+export async function getPublicRecipes(token) {
+  const supabase = getClient(token);
 
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    db: {
-      schema: "public",
-    },
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-    global: {
-      headers: token
-        ? {
-            Authorization: `Bearer ${token}`,
-          }
-        : null,
-    },
-  });
+  return await supabase.from("Recipies").select("*").eq("public", true);
+}
+
+export async function getRecipe(Id, token) {
+  const supabase = getClient(token);
+
+  return await supabase.from("Recipies").select("*").eq("id", Id);
+}
+
+export async function createRecipe(data, token, userId) {
+  const supabase = getClient(token);
 
   return await supabase.from("Recipies").insert([
     {
@@ -51,6 +49,7 @@ export async function createRecipe(data, token, userId) {
       Title: data.Title,
       Ingredients: data.Ingredients,
       Instructions: data.Instructions,
+      public: data.Public,
     },
   ]);
 }
