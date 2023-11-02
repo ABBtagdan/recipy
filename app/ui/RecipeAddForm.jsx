@@ -80,7 +80,9 @@ export default function RecipeAddForm() {
         <input
           type="checkbox"
           value={Public}
-          onChange={(e) => setPublic(e.target.value)}
+          onChange={(e) => {
+            setPublic(e.target.checked);
+          }}
         />
       </div>
       <div className="w-1/2 flex flex-col gap-5 justify-start items-center m-5">

@@ -13,7 +13,7 @@ export default async function UserRecipes(props) {
     <div className="flex w-full justify-center">
       <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4">
         {recipes.map((value, index) => (
-          <RecipePreviewCard key={index} data={value} />
+          <RecipePreviewCard key={index} data={value} isOwner={true} />
         ))}
       </div>
     </div>
